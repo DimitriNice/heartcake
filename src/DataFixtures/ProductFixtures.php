@@ -29,14 +29,15 @@ class ProductFixtures extends Fixture
 
         // Exemple de boucle pour créer des produits associés à des catégories existantes
         foreach ($categories as $category) {
-            for ($i = 0; $i < 50; $i++) {
+            for ($i = 0; $i < 2; $i++) {
                 $product = new Product();
                 $product->setName($this->faker->sentence(3));
                 $product->setSlug($this->faker->slug);
-                $product->setIllustration("liendelillustration+$i");
+                $product->setIllustration($this->faker->imageUrl(400, 300, 'cats')); // Utilisation de Faker pour générer un lien d'image fictive
+                $product->setSubtitle($this->faker->sentence(1));;
                 $product->setSubtitle($this->faker->sentence(1));
                 $product->setDescription($this->faker->text(100));
-                $product->setPrice($this->faker->randomFloat(2, 0));
+                $product->setPrice($this->faker->randomFloat(2, 0, 500));
                 $product->setCategory($category); // Associez le produit à la catégorie
                 $manager->persist($product);
             }

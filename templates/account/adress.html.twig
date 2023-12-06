@@ -12,7 +12,7 @@
         <p class="text-center">
             Vous n'avez pas encore ajouté d'adresses dans votre compte client. Pour en ajouter une, veuillez <a href="{{ path('account_adress_add') }}">cliquer ici</a>.
         </p>
-    {% else %}
+    {% else %}http://0.0.0.0:8000/#myCarousel
         <div class="row">
             {% for adress in app.user.adresses %}
                 <div class="col-md-4">

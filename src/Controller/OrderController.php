@@ -8,6 +8,8 @@ use App\Entity\Order;
 use App\Form\OrderType;
 use App\Entity\OrderDetails;
 use Doctrine\ORM\EntityManagerInterface;
+use Stripe\Checkout\Session;
+use Stripe\Stripe;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,7 +41,7 @@ class OrderController extends AbstractController
             'cart' => $cart->getFull()
         ]);
     }
-    
+
     #[Route('/commande/recapitulatif', name: 'order_recap', methods: ['POST'])]
     public function add(Cart $cart, Request $request): Response
     {
@@ -88,6 +90,27 @@ class OrderController extends AbstractController
 
             // $this->entityManager->flush();
 
+            Stripe::setApiKey('sk_test_51OMD4JI7Eyspb9watGUqtyrYDHepfeBZxQYKyRALBsEwajvwMF0pHC4XncBbDigvZsc7dImdVSsltV1lylgk8aJE00N68WLZGO');
+            header('Content-Type: application/json');
+
+            $YOUR_DOMAIN = 'http://localhost:8000';
+
+            $checkout_session = Session::create([
+                'line_items' => [[
+                    # Provide the exact Price ID (e.g. pr_1234) of the product you want to sell
+                    'price' => $orderDetails->getId(),
+                    'quantity' => 1,
+                ]],
+                'mode' => 'payment',
+                'success_url' => $YOUR_DOMAIN . '/success.html',
+                'cancel_url' => $YOUR_DOMAIN . '/cancel.html',
+            ]);
+
+            header("HTTP/1.1 303 See Other");
+            header("Location: " . $checkout_session->url);
+
+            dd($checkout_session);
+
             return $this->render('order/add_order.html.twig', [
                 'cart' => $cart->getFull(),
                 'carrier' => $carriers,
@@ -96,6 +119,5 @@ class OrderController extends AbstractController
         }
 
         return $this->redirectToRoute('app_cart');
-
     }
 }

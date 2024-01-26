@@ -6,13 +6,13 @@
     <a href="{{ path('account_adress_add') }}" class="btn btn-info btn-sm float-right">Ajouter une adresse</a>
     <h1>Mes adresses</h1>
     C'est dans cet espace que vous allez pouvoir gérer toutes vos adresses. <br>
-    <a href="{{ path('app_account') }}">Retour</a> <hr>
+    <a href="{{ path('app_account') }}">Retour</a> <hr> <br>
     
     {% if app.user.adresses|length == 0 %}
         <p class="text-center">
             Vous n'avez pas encore ajouté d'adresses dans votre compte client. Pour en ajouter une, veuillez <a href="{{ path('account_adress_add') }}">cliquer ici</a>.
         </p>
-    {% else %}http://0.0.0.0:8000/#myCarousel
+    {% else %}
         <div class="row">
             {% for adress in app.user.adresses %}
                 <div class="col-md-4">
@@ -25,7 +25,7 @@
                             </p>
                             <a href="{{ path('account_adress_edit', {'id': adress.id }) }}">Modifier</a> | <a href="{{ path('account_adress_delete', {'id' : adress.id }) }}">Supprimer</a>
                         </div>
-                    </div>
+                    </div><br>
                 </div>
             {% endfor %}
         </div>
